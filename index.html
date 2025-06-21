@@ -172,7 +172,7 @@
       <table>
         <tr>
           <td colspan="1" class="red center"><div contenteditable class="editable center">08:00</div></td>
-          <td colspan="2" class="red center"><div contenteditable class="editable center">01.01.2025</div></td>
+          <td colspan="2" class="red center"><div id="autoDate" contenteditable class="editable center"></div></td>
           <td colspan="2" class="red center"><div contenteditable class="editable center">без зброї</div></td>
         </tr>
         <tr>
@@ -234,10 +234,25 @@
 
     <button id="saveBtn" class="centralButton">Зберегти як зображення</button>
     <button id="copyBtn" class="centralButton">Копіювати як зображення</button>
-    <button id="saveHtmlBtn" class="centralButton">Зберегти HTML</button>;
+    <button id="saveHtmlBtn" class="centralButton">Зберегти HTML</button>
     <!-- html2canvas -->
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script>
+      // Set today's date in DD.MM.YYYY format
+      document.addEventListener("DOMContentLoaded", function () {
+        const dateDiv = document.getElementById("autoDate");
+        if (dateDiv) {
+          // Only set if empty, so we can preserve it for HTML export
+          if (!dateDiv.textContent.trim()) {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, "0");
+            const month = String(today.getMonth() + 1).padStart(2, "0");
+            const year = today.getFullYear();
+            dateDiv.textContent = `${day}.${month}.${year}`;
+          }
+        }
+      });
+
       const pibDiv = document.querySelector("#pib.editable");
 
       function updateTitleFromPib() {
