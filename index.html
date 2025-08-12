@@ -171,9 +171,9 @@
 
       <table>
         <tr>
-          <td colspan="1" class="red center"><div contenteditable class="editable center">08:00</div></td>
+          <td colspan="1" class="red center"><div id="autoTime" contenteditable class="editable center"></div></td>
           <td colspan="2" class="red center"><div id="autoDate" contenteditable class="editable center"></div></td>
-          <td colspan="2" class="red center"><div contenteditable class="editable center">без зброї</div></td>
+          <td colspan="2" class="red center"><div id="weapon" contenteditable class="editable center">без зброї</div></td>
         </tr>
         <tr>
           <td colspan="1">
@@ -232,6 +232,7 @@
       </table>
     </div>
 
+    <button id="clearBtn" class="centralButton">Очистити всі поля</button>
     <button id="saveBtn" class="centralButton">Зберегти як зображення</button>
     <button id="copyBtn" class="centralButton">Копіювати як зображення</button>
     <button id="saveHtmlBtn" class="centralButton">Зберегти HTML</button>
@@ -240,16 +241,22 @@
     <script>
       // Set today's date in DD.MM.YYYY format
       document.addEventListener("DOMContentLoaded", function () {
+        // Auto date
         const dateDiv = document.getElementById("autoDate");
-        if (dateDiv) {
-          // Only set if empty, so we can preserve it for HTML export
-          if (!dateDiv.textContent.trim()) {
-            const today = new Date();
-            const day = String(today.getDate()).padStart(2, "0");
-            const month = String(today.getMonth() + 1).padStart(2, "0");
-            const year = today.getFullYear();
-            dateDiv.textContent = `${day}.${month}.${year}`;
-          }
+        if (dateDiv && !dateDiv.textContent.trim()) {
+          const today = new Date();
+          const day = String(today.getDate()).padStart(2, "0");
+          const month = String(today.getMonth() + 1).padStart(2, "0");
+          const year = today.getFullYear();
+          dateDiv.textContent = `${day}.${month}.${year}`;
+        }
+        // Auto time
+        const timeDiv = document.getElementById("autoTime");
+        if (timeDiv && !timeDiv.textContent.trim()) {
+          const now = new Date();
+          const hours = String(now.getHours()).padStart(2, "0");
+          const minutes = String(now.getMinutes()).padStart(2, "0");
+          timeDiv.textContent = `${hours}:${minutes}`;
         }
       });
 
@@ -438,6 +445,15 @@
 
             controls.style.display = "block";
           }, "image/png");
+        });
+      });
+
+      document.getElementById("clearBtn").addEventListener("click", () => {
+        document.querySelectorAll(".editable").forEach((el) => {
+          if (["autoTime", "autoDate", "weapon"].includes(el.id)) {
+            return;
+          }
+          el.innerText = "";
         });
       });
     </script>
