@@ -303,9 +303,9 @@
         sel.addRange(range);
       }
       const photo = document.getElementById("mainPhoto");
-      let scale = 2.6,
-        posX = 0,
-        posY = 0;
+      let scale = parseFloat(photo.style.transform.replace(/[^0-9.]/g, '')) || 2.7,
+          posX = parseFloat(photo.style.left) || 0,
+          posY = parseFloat(photo.style.top) || 0;
 
       function updateTransform() {
         photo.style.transform = `scale(${scale})`;
@@ -317,7 +317,7 @@
         const reader = new FileReader();
         reader.onload = (ev) => {
           photo.src = ev.target.result;
-          scale = 1;
+          scale = 0.5;
           posX = 0;
           posY = 0;
           updateTransform();
